@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+
+  app:
+    build:
+      context: .
+    links:
+      - mongo
+      - redis
+    depends_on:
+      - mongo
+    environment:
+      - REDIS_URL=redis://redis
+      - PORT=5151
+      - NODE_ENV=development
+    ports:
+      - 5151:5151
+      - 3000:8080
+    volumes:
+      - ./src:/src/src/
+      - ./view:/src/view/
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379:6379
+
+  mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      - MONGO_DATA_DIR=/data/db
+    command: mongod --smallfiles
+    volumes:
+      - ./data:/data/db
+    ports:
+      - 3752:27017

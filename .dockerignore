@@ -1,0 +1,6 @@
+.git
+.tags
+node_modules
+coverage
+logs
+data/*
